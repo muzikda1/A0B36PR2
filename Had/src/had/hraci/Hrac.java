@@ -2,10 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package had.hraci;
+package Had.hraci;
 
-import had.gui.Gui;
-import had.spolecne.Smer;
+import Had.gui.Gui;
+import Had.snake.Snake.Telo;
+import Had.spolecne.Smer;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -23,13 +24,9 @@ public class Hrac extends AbstraktniHrac{
     Smer smer = Smer.NAHORU;
 
     public Hrac(Gui rozhrani) {
+        super(10, 10);
         this.rozhrani = rozhrani;
         rozhrani.addKeyListener(klavesnice);
-    }
-    
-    @Override
-    public int tah() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public KeyListener klavesnice = new KeyAdapter() {
@@ -51,5 +48,10 @@ public class Hrac extends AbstraktniHrac{
             }
         }
     };
+
+    @Override
+    public void tah() {
+        this.had.posunHada(smer);
+    }
     
 }

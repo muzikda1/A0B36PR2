@@ -2,9 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package had.hraci;
+package Had.hraci;
 
-import had.snake.Snake;
+import Had.snake.Snake;
+import Had.spolecne.Smer;
 import java.awt.Color;
 
 /**
@@ -16,16 +17,21 @@ import java.awt.Color;
  */
 public abstract class AbstraktniHrac {
     
-    private Color barva;
-    private int skore;
-    private int delka;
-    private Snake had;
+    protected Color barva;
+    protected int skore;
+    protected int delka;
+    protected Snake had;
     
-    public AbstraktniHrac(){
+    public AbstraktniHrac(int initX, int initY){
         this.skore = 0;
+        this.had = new Snake(initX, initY);
     }
     
-    public abstract int tah();
+    public abstract void tah();
+    
+    public Snake getHad(){
+        return had;
+    }
     
     public int getSkore(){
         return skore;
