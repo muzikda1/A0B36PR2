@@ -2,11 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Had.hraci;
+package had.hraci;
 
-import Had.gui.Gui;
-import Had.snake.Snake.Telo;
-import Had.spolecne.Smer;
+import had.gui.Gui;
+import had.snake.Snake.Telo;
+import had.spolecne.Smer;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -27,6 +27,7 @@ public class Hrac extends AbstraktniHrac{
         super(10, 10);
         this.rozhrani = rozhrani;
         rozhrani.addKeyListener(klavesnice);
+        System.out.println("hotovo 1");
     }
 
     public KeyListener klavesnice = new KeyAdapter() {
@@ -34,6 +35,7 @@ public class Hrac extends AbstraktniHrac{
         @Override
         public void keyPressed(KeyEvent e) {
             if (e.getKeyChar() == 'p') { // pause
+                System.out.println("pauza zavolana");
                 rozhrani.pause();
             } else if (e.getKeyChar() == 'w') { // up
                 smer = Smer.NAHORU;

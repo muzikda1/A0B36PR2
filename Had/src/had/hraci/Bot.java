@@ -2,11 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Had.hraci;
+package had.hraci;
 
-import Had.gui.Gui;
-import Had.snake.Snake.Telo;
-import Had.spolecne.Smer;
+import had.gui.Gui;
+import had.snake.Snake.Telo;
+import had.spolecne.Smer;
 import java.util.Map;
 
 /**
@@ -23,7 +23,7 @@ public class Bot extends AbstraktniHrac{
     Map open, closed;
 
     public Bot(Gui rozhrani) {
-        super(10, 10);
+        super(15, 15);
         this.rozhrani = rozhrani;
     }
     

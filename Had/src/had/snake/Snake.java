@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Had.snake;
+package had.snake;
 
-import Had.spolecne.Smer;
+import had.spolecne.Smer;
 
 /**
  *
@@ -15,7 +15,7 @@ import Had.spolecne.Smer;
 public class Snake {
     
     public class Telo{
-        public Telo predchozi, dalsi;
+        public Snake.Telo predchozi, dalsi;
         public int x, y;
         
         public Telo(int x, int y){
@@ -32,15 +32,16 @@ public class Snake {
         }
     }
     
-    public Telo hlava;
-    public Telo ocas;
-    public Telo stin;   //"stin" ocasu, tady se prekresluje ocas hada na volnou plochu
+    public Snake.Telo hlava;
+    public Snake.Telo ocas;
+    public Snake.Telo stin;   //"stin" ocasu, tady se prekresluje ocas hada na volnou plochu
     private int delka, toIncrement;
     
     public Snake(int initX, int initY){
         this.toIncrement = 5;   //tady si nadefinujeme pocatecni delku hada
         this.delka = 1; //zezacatku je had dlouhy 1 (jen hlava), prodluzuje se kazdym krokem az do pocatecni delky
-        this.hlava = this.ocas = new Telo(initX, initY);
+        this.hlava = new Snake.Telo(initX, initY);
+        this.ocas = this.hlava;
     }
 
     public int getDelka() {
@@ -52,22 +53,24 @@ public class Snake {
     }
     
     public void posunHada(Smer smer){
-        Telo novaHlava = new Telo(0, 0);    //musime inicializovat
+        Snake.Telo novaHlava = new Snake.Telo(0, 0);    //musime inicializovat
         switch (smer) {
             case NAHORU:
-                novaHlava = new Telo(this.hlava.x, this.hlava.y-1); //vytvorime novou hlavu v pozadovanem smeru
+                novaHlava = new Snake.Telo(this.hlava.x, this.hlava.y-1); //vytvorime novou hlavu v pozadovanem smeru
                 break;
             case DOLU:
-                novaHlava = new Telo(this.hlava.x, this.hlava.y+1);
+                novaHlava = new Snake.Telo(this.hlava.x, this.hlava.y+1);
                 break;
             case DOLEVA:
-                novaHlava = new Telo(this.hlava.x-1, this.hlava.y);
+                novaHlava = new Snake.Telo(this.hlava.x-1, this.hlava.y);
                 break;
             case DOPRAVA:
-                novaHlava = new Telo(this.hlava.x+1, this.hlava.y);
+                novaHlava = new Snake.Telo(this.hlava.x+1, this.hlava.y);
                 break;
         }
         novaHlava.dalsi = this.hlava;   //novou hlavu zapojime do seznamu
+        this.hlava = novaHlava;
+        this.hlava.dalsi.predchozi = this.hlava;
         if(toIncrement>0){
             this.toIncrement --; //had se prodluzuje
             this.delka ++;

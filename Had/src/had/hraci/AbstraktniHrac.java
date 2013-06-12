@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Had.hraci;
+package had.hraci;
 
-import Had.snake.Snake;
-import Had.spolecne.Smer;
+import had.snake.Snake;
+import had.spolecne.Smer;
 import java.awt.Color;
 
 /**
