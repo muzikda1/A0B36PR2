@@ -10,6 +10,7 @@ import had.snake.Snake.Telo;
 import had.hraci.AbstraktniHrac;
 import had.hraci.Bot;
 import had.hraci.Hrac;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -18,23 +19,31 @@ import javax.swing.Timer;
 /**
  *
  * @author David
+ * 
+ * 
  */
 public class Logika {
     private ArrayList<AbstraktniHrac> hraci;
+    private ArrayList<Bot> boti;
     private Gui gui;
     private int sirka = 20;
     public Timer tajmr;
     
     public Logika(){
         hraci = new ArrayList<AbstraktniHrac>();
-        gui = new Gui(this, sirka);
+        boti = new ArrayList<Bot>();
+        gui = new Gui(this, sirka, boti);
         gui.setVisible(true);
         novaHra();
     }
     
     private void novaHra(){
-        hraci.add(new Hrac(gui));
-        hraci.add(new Bot(gui));
+        hraci.add(new Hrac("Hrac", gui));
+        hraci.get(0).setBarva(Nastaveni.BARVA_HRACE);
+        Bot b = new Bot("Bot 1", gui);
+        boti.add(b);
+        hraci.add(b);
+        gui.boti = boti;
         hrneckuVar();
         tajmr = new Timer(100, new Logika.TiknutiSveta());
         tajmr.start();
@@ -54,8 +63,7 @@ public class Logika {
     }
     
     public void hrneckuVar(){   //pridame potravu na nahodne souradnice
-        int x = (int)(Math.random()*sirka);
-        int y = (int)(Math.random()*sirka);
-        gui.pridejPotravu(x, y);
+        while(!gui.pridejPotravu((int)(Math.random()*sirka), (int)(Math.random()*sirka))){
+        }
     }
 }

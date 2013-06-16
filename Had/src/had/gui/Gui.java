@@ -5,14 +5,17 @@
 package had.gui;
 
 import had.Logika;
+import had.Nastaveni;
 import had.snake.Snake;
 import had.snake.Snake.Telo;
 import had.hraci.AbstraktniHrac;
+import had.hraci.Bot;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -21,9 +24,10 @@ import javax.swing.JPanel;
  */
 public class Gui extends JFrame{
     
-    Logika herniLogika;
-    JPanel herniPolicka;
-    ArrayList<Gui.Policko> policka;
+    private Logika herniLogika;
+    private JPanel herniPolicka;
+    private ArrayList<Gui.Policko> policka;
+    public ArrayList<Bot> boti;
     
     private class Policko extends JPanel{
         public Policko(){
@@ -33,12 +37,12 @@ public class Gui extends JFrame{
     }
     
     
-    protected int[][] herniPlan;
+    public int[][] herniPlan;
         //-1 pro potravu
         //0 pro prazdne pole
         //N pro hada - Ntym tahem bude pryc - aby byl bot inteligentejsi
     
-    public Gui(Logika logika, int sirka){
+    public Gui(Logika logika, int sirka, ArrayList<Bot> boti){
         herniLogika = logika;
         herniPlan = new int[sirka][sirka];
         policka = new ArrayList<Gui.Policko>();
@@ -48,18 +52,47 @@ public class Gui extends JFrame{
         inicializuj();
     }
     
-    public void pridejPotravu(int x, int y){
+    public boolean pridejPotravu(int x, int y){
         if(herniPlan[x][y]==0){
             herniPlan[x][y]=-1;
             vykresli(x, y, Color.GREEN);
+            for (Bot bot : boti) {
+                bot.setTarget(x,y);
+            }
+            return true;
         }
+        return false;
     }
     
     public void updatujHada(AbstraktniHrac hrac){
         Snake had = hrac.getHad();
         int delka = had.getDelka();
-        Telo telo = had.hlava;
+        Telo telo;
+        if(had.stin!=null){ //prekreslime prostor, odkud had odesel
+            telo = had.stin;
+            herniPlan[telo.x][telo.y]=0;
+            vykresli(telo.x, telo.y, hrac.getBarva());
+        }
+        telo = had.hlava;
         System.out.println("hlava na "+telo.x+" "+telo.y);
+        if(telo.x < 0 ||
+           telo.y < 0 ||
+           telo.x >= herniPlan.length ||
+           telo.y >= herniPlan[0].length ||
+           herniPlan[telo.x][telo.y] != 0){
+            if(telo.x > -1 &&
+               telo.y > -1 &&
+               telo.x < herniPlan.length &&
+               telo.y < herniPlan[0].length && 
+               herniPlan[telo.x][telo.y] == -1){
+                hrac.incrementSkore();
+                herniLogika.hrneckuVar();   //pošleme tam novou stravu
+                hrac.getHad().zvetsi(Nastaveni.ZVETSENI_HADA);
+            }else{
+                hracProhral(hrac);
+                return;
+            }
+        }
         herniPlan[telo.x][telo.y]=delka;
         vykresli(telo.x, telo.y, hrac.getBarva()); //nakreslime hlavu
         while(true){
@@ -67,11 +100,6 @@ public class Gui extends JFrame{
             delka--;
             if(telo == had.ocas) break;
             else telo = telo.dalsi;
-        }
-        if(had.stin!=null){ //prekreslime prostor, odkud had odesel
-            telo = had.stin;
-            herniPlan[telo.x][telo.y]=0;
-            vykresli(telo.x, telo.y, hrac.getBarva());
         }
     }
     
@@ -111,6 +139,21 @@ public class Gui extends JFrame{
             default:
                 policka.get(y*herniPlan.length+x).setBackground(color);
         }
+    }
+
+    private void hracProhral(AbstraktniHrac hrac) {
+        herniLogika.tajmr.stop();
+        Object[] options = {"Ok"};  //dialogove okno
+        JOptionPane.showOptionDialog(this,
+        "Konec hry\n Prohrál "+hrac.getName()+"!",
+        "Konec hry",
+        JOptionPane.OK_OPTION,
+        JOptionPane.INFORMATION_MESSAGE,
+        null,
+        options,
+        options[0]);
+        setVisible(false);
+        System.exit(0);
     }
     
 }

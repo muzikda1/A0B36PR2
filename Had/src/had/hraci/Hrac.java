@@ -22,12 +22,12 @@ public class Hrac extends AbstraktniHrac{
 
     Gui rozhrani;
     Smer smer = Smer.NAHORU;
+    Smer posledniSmer;
 
-    public Hrac(Gui rozhrani) {
-        super(10, 10);
+    public Hrac(String name, Gui rozhrani) {
+        super(name, 10, 10);
         this.rozhrani = rozhrani;
         rozhrani.addKeyListener(klavesnice);
-        System.out.println("hotovo 1");
     }
 
     public KeyListener klavesnice = new KeyAdapter() {
@@ -37,13 +37,13 @@ public class Hrac extends AbstraktniHrac{
             if (e.getKeyChar() == 'p') { // pause
                 System.out.println("pauza zavolana");
                 rozhrani.pause();
-            } else if (e.getKeyChar() == 'w') { // up
+            } else if (e.getKeyChar() == 'w' && posledniSmer != Smer.DOLU) { // up
                 smer = Smer.NAHORU;
-            } else if (e.getKeyChar() == 's') { // down
+            } else if (e.getKeyChar() == 's' && posledniSmer != Smer.NAHORU) { // down
                 smer = Smer.DOLU;
-            } else if (e.getKeyChar() == 'a') { // left
+            } else if (e.getKeyChar() == 'a' && posledniSmer != Smer.DOPRAVA) { // left
                 smer = Smer.DOLEVA;
-            } else if (e.getKeyChar() == 'd') { // right
+            } else if (e.getKeyChar() == 'd' && posledniSmer != Smer.DOLEVA) { // right
                 smer = Smer.DOPRAVA;
             } else if (e.getKeyChar() == 'q') { // quit
                 rozhrani.askToQuit();
@@ -54,6 +54,7 @@ public class Hrac extends AbstraktniHrac{
     @Override
     public void tah() {
         this.had.posunHada(smer);
+        posledniSmer = smer;
     }
     
 }
