@@ -23,7 +23,7 @@ public class Bot extends AbstraktniHrac{
     private int targety, targetx;
 
     public Bot(String name, Gui rozhrani) {
-        super(name, 15+(int)Math.random()*10, 15+(int)Math.random()*10);
+        super(name, 15, 15);
         this.rozhrani = rozhrani;
     }
     

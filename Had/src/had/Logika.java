@@ -43,9 +43,6 @@ public class Logika {
         Bot b = new Bot("Bot 1", gui);
         boti.add(b);
         hraci.add(b);
-        Bot c = new Bot("Bot 2", gui);
-        boti.add(c);
-        hraci.add(c);
         gui.boti = boti;
         hrneckuVar();
         tajmr = new Timer(100, new Logika.TiknutiSveta());
